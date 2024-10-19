@@ -9,6 +9,15 @@ export default {
         noto: ["Noto Sans KR", "sans-serif"],
         climate: ["Climate Crisis", "cursive"],
       },
+      keyframes: {
+        waveDrop: {
+          "0%": { top: "-150%" },
+          "100%": { top: "00%" },
+        },
+      },
+      animation: {
+        waveDrop: "waveDrop 3s ease-in-out forwards",
+      },
       backgroundColor: {
         main: "#FFFAF2",
       },
