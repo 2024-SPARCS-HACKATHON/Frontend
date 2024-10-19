@@ -24,8 +24,9 @@ function Fullpage() {
               height: "100vh",
               width: "100vw",
             }}
+            className="bg-[#FFFAF2]"
           >
-            <WavePage></WavePage>
+            <WavePage startColor="#FF5733" endColor="#C70039" />
           </div>
         </FullpageSection>
         <FullpageSection name="second">
@@ -34,8 +35,9 @@ function Fullpage() {
               height: "250vh",
               width: "100vw",
             }}
+            className="bg-[#FFFAF2]"
           >
-            <Process></Process>
+            <Process sectionColors="#494BB3" />
           </div>
         </FullpageSection>
       </FullpageContainer>

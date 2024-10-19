@@ -8,15 +8,16 @@ export default {
         courier: ["Courier New", "monospace"],
         noto: ["Noto Sans KR", "sans-serif"],
         climate: ["Climate Crisis", "cursive"],
+        bruno: ['"Bruno Ace"', "sans-serif"],
       },
       keyframes: {
         waveDrop: {
           "0%": { top: "-150%" },
-          "100%": { top: "00%" },
+          "100%": { top: "0%" },
         },
       },
       animation: {
-        waveDrop: "waveDrop 3s ease-in-out forwards",
+        waveDrop: "waveDrop 2.68s ease-in-out forwards",
       },
       backgroundColor: {
         main: "#FFFAF2",
