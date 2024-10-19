@@ -1,32 +1,30 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-const Process: React.FC = () => {
+// Props 인터페이스 정의
+interface ProcessProps {
+  sectionColors: string;
+}
+
+const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
   const stepRefs = useRef<HTMLDivElement[]>([]); // 각 Step에 대한 ref
+  const [isFirstContent, setIsFirstContent] = useState(true); // 첫 번째 내용인지 여부를 관리하는 상태
 
   const handleChange = (inView: boolean, targetIndex: number) => {
     stepRefs.current.forEach((step, index) => {
-      // 밝기 계산: index와 targetIndex의 차이에 따라 20%씩 감소
-      const brightness = Math.max(40, 100 - (targetIndex - index) * 20); // 최소 밝기 40%로 제한
-
-      // 크기 계산: 각 요소는 현재 요소보다 작아짐
-      const scale = Math.max(0.6, 1 - (targetIndex - index) * 0.1); // 최소 크기 0.6으로 제한
-
-      // 높이 계산: index가 targetIndex에서 멀어질수록 줄어듦
-      const height = Math.max(60, 100 - (targetIndex - index) * 10); // 최소 높이 60vh로 제한
+      const brightness = Math.max(40, 100 - (targetIndex - index) * 20);
+      const scale = Math.max(0.6, 1 - (targetIndex - index) * 0.1);
+      const height = Math.max(60, 100 - (targetIndex - index) * 10);
 
       if (inView && index < targetIndex) {
-        // 이전 요소들 - 크기, 밝기, 높이 조정
         step.style.filter = `brightness(${brightness}%)`;
         step.style.transform = `translateY(${(index - targetIndex) * 20}px) scale(${scale})`;
         step.style.height = `${height}vh`;
       } else if (inView && index === targetIndex) {
-        // 현재 요소 - 원래 크기와 밝기 유지
         step.style.filter = "brightness(100%)";
         step.style.transform = `translateY(0px) scale(1)`;
         step.style.height = "100vh";
       } else {
-        // 이후 요소들 - 원래 상태 유지
         step.style.filter = "brightness(100%)";
         step.style.transform = `translateY(0px) scale(1)`;
         step.style.height = "100vh";
@@ -50,12 +48,18 @@ const Process: React.FC = () => {
     handleChange(inView3, 2);
   }, [inView3]);
 
+  // 버튼 클릭 시 첫 번째 섹션의 내용을 교대로 변경하는 함수
+  const handleButtonClick = () => {
+    setIsFirstContent((prev) => !prev); // 이전 상태를 토글하여 교대로 바뀌도록 설정
+  };
+
   return (
     <div className="z-[100] min-h-screen w-full">
       <main role="main">
         <section className="process relative transition-transform duration-700 ease-in-out">
           <div className="process__container mx-auto max-w-screen-xl px-5 py-2 md:px-12">
             <div id="process" className="relative space-y-10">
+              {/* 첫 번째 섹션 */}
               <div
                 ref={(el) => {
                   stepRefs.current[0] = el!;
@@ -64,25 +68,60 @@ const Process: React.FC = () => {
                 data-index="0"
                 className="sticky top-0 z-[1] flex h-screen transform flex-col items-center justify-center transition-all duration-500 ease-in-out"
               >
-                <div className="relative mb-5 min-h-[60vh] w-[1500px] rounded-lg bg-blue-500 p-8 text-center shadow-lg">
-                  <p className="mb-4 inline-block rounded bg-white px-2 py-1 text-sm uppercase text-blue-500">
-                    Première rencontre
-                  </p>
-                  <h2 className="mb-6 text-2xl text-white">
-                    Nous voulons en connaître plus sur vous afin de mieux cibler
-                    ce que vous recherchez
-                  </h2>
-                  <p className="mb-6 text-white">
-                    Nous voulons connaître votre vision du projet, qu’il soit
-                    simple ou grandiose, afin de trouver le produit répondant à
-                    vos attentes.
-                  </p>
-                  <div className="absolute bottom-10 left-10 flex items-center">
-                    <span className="mr-2 inline-block h-1 w-8 bg-white"></span>
-                    <p className="text-xl text-white">01</p>
+                <div
+                  className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
+                  style={{ backgroundColor: sectionColors }} // 배경색 설정
+                >
+                  <div className="flex items-center">
+                    <div className="m-[30px] flex h-[70px] w-[70px] items-center justify-center rounded-[100px] bg-white font-phudu text-[35px]">
+                      1
+                    </div>
+                    <div className="h-[1px] w-[63px] bg-white"></div>
+                    <div className="m-[30px] font-noto text-[35px] text-white">
+                      분석 결과를 알려드려요
+                    </div>
                   </div>
+                  {isFirstContent ? (
+                    <div className="flex h-[50vh] w-full items-center justify-center">
+                      <button className="h-[53px] w-[53px]" />
+                      <div className="w-[1400px]">이미지</div>
+                      <div>
+                        <button
+                          onClick={handleButtonClick}
+                          className="h-[53px] w-[53px]"
+                          style={{
+                            backgroundImage:
+                              "url(/public/assets/arrow-right.png)",
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex h-[50vh] w-full items-center justify-center">
+                      <div>
+                        <button
+                          onClick={handleButtonClick}
+                          className="h-[53px] w-[53px]"
+                          style={{
+                            backgroundImage:
+                              "url(/public/assets/arrow-left.png)",
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                          }}
+                        />
+                      </div>
+                      <div className="w-[1400px]">이미지</div>
+                      <button className="h-[53px] w-[53px]" />
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* 두 번째 섹션 */}
               <div
                 ref={(el) => {
                   stepRefs.current[1] = el!;
@@ -91,49 +130,72 @@ const Process: React.FC = () => {
                 data-index="1"
                 className="sticky top-0 z-[2] flex h-screen transform flex-col items-center justify-center transition-all duration-500 ease-in-out"
               >
-                <div className="relative mb-5 min-h-[60vh] w-[1500px] rounded-lg bg-blue-500 p-8 text-center shadow-lg">
-                  <p className="mb-4 inline-block rounded bg-white px-2 py-1 text-sm uppercase text-blue-500">
-                    Recherche de solution
-                  </p>
-                  <h2 className="mb-6 text-2xl text-white">
-                    Nous travaillons fort pour vous afin de trouver le
-                    fournisseur et le produit idéal
-                  </h2>
-                  <p className="mb-6 text-white">
-                    Nous recherchons pour vous le produit le plus adéquat parmi
-                    notre grande variété au meilleur prix pour répondre à votre
-                    demande.
-                  </p>
-                  <div className="absolute bottom-10 left-10 flex items-center">
-                    <span className="mr-2 inline-block h-1 w-8 bg-white"></span>
-                    <p className="text-xl text-white">02</p>
+                <div
+                  className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
+                  style={{ backgroundColor: sectionColors }}
+                >
+                  <div className="flex items-center">
+                    <div className="m-[30px] flex h-[70px] w-[70px] items-center justify-center rounded-[100px] bg-white font-phudu text-[35px]">
+                      2
+                    </div>
+                    <div className="h-[1px] w-[63px] bg-white"></div>
+                    <div className="m-[30px] font-noto text-[35px] text-white">
+                      비슷한 목소리를 가진 인물
+                    </div>
+                  </div>
+                  <div className="flex justify-evenly">
+                    <div className="w-[800px]"></div>
+                    <img className="w-[600px]"></img>
                   </div>
                 </div>
               </div>
+
+              {/* 세 번째 섹션 */}
               <div
                 ref={(el) => {
                   stepRefs.current[2] = el!;
-                  ref3(el); // useInView ref 적용
+                  ref3(el);
                 }}
                 data-index="2"
                 className="sticky top-0 z-[3] flex h-screen transform flex-col items-center justify-center transition-all duration-500 ease-in-out"
               >
-                <div className="relative mb-5 min-h-[60vh] w-[1500px] rounded-lg bg-blue-500 p-8 text-center shadow-lg">
-                  <p className="mb-4 inline-block rounded bg-white px-2 py-1 text-sm uppercase text-blue-500">
-                    Soumission
-                  </p>
-                  <h2 className="mb-6 text-2xl text-white">
-                    Nous vous présentons une soumission détaillée pour votre
-                    projet
-                  </h2>
-                  <p className="mb-6 text-white">
-                    Vous aurez tous les détails nécessaires pour la réalisation
-                    du projet. C’est le moment idéal pour faire des ajustements
-                    avant de confirmer votre commande.
-                  </p>
-                  <div className="absolute bottom-10 left-10 flex items-center">
-                    <span className="mr-2 inline-block h-1 w-8 bg-white"></span>
-                    <p className="text-xl text-white">03</p>
+                <div
+                  className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
+                  style={{ backgroundColor: sectionColors }}
+                >
+                  <div className="flex items-center">
+                    <div className="m-[30px] flex h-[70px] w-[70px] items-center justify-center rounded-[100px] bg-white font-phudu text-[35px]">
+                      3
+                    </div>
+                    <div className="h-[1px] w-[63px] bg-white"></div>
+                    <div className="m-[30px] font-noto text-[35px] text-white">
+                      목소리에 고민이 있다면
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="font-noto text-[30px]">
+                      목소리가 너무 맑고 깨끗해서,
+                      <br />
+                      사람들이 가끔 차갑거나 거리감이 느껴진다는 말을 할 수
+                      있어요.
+                    </div>
+                    <div className="my-5 font-noto text-[34px] font-bold">
+                      이렇게 해 보세요!
+                    </div>
+                    <div className="flex w-full items-center justify-evenly">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
+                        <div></div>
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
+                        <div></div>
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
+                        <div></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
