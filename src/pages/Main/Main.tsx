@@ -11,7 +11,7 @@ function Main() {
         backgroundImage: "url(/public/assets/bg-main.png)",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        backgroundPosition: "bottom center",
       }}
     >
       <div className="flex flex-col items-center">
