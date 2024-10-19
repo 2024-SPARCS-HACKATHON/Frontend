@@ -9,6 +9,9 @@ export default {
         noto: ["Noto Sans KR", "sans-serif"],
         climate: ["Climate Crisis", "cursive"],
       },
+      backgroundColor: {
+        main: "#FFFAF2",
+      },
     },
   },
   plugins: [],

@@ -1,0 +1,89 @@
+.text-stroke {
+  -webkit-text-stroke: 3px #fd5151;
+}
+
+.bg-wave {
+  background-image: url("/public/assets/text-bg.png");
+  background-position: left 2600px top 150px;
+  background-size: cover;
+  background-repeat: repeat-x;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  animation: wave 1.7s linear;
+}
+
+@keyframes wave {
+  0% {
+    background-position: left 0px top 600px;
+  }
+  100% {
+    background-position: left 2600px top 150px;
+  }
+}
+
+.mask-btn {
+  position: relative;
+  background: transparent; /* 마스크 효과가 적용될 기본 배경 */
+  color: #fd5151; /* 텍스트 색상 */
+  cursor: pointer;
+
+  /* 마스크 이미지와 애니메이션 */
+  -webkit-mask: url("https://raw.githubusercontent.com/pizza3/asset/master/natureSmaller.png");
+  mask: url("https://raw.githubusercontent.com/pizza3/asset/master/natureSmaller.png");
+  -webkit-mask-size: 7100% 100%;
+  mask-size: 7100% 100%;
+  transition: 0.2s;
+}
+
+.mask-btn:hover {
+  background-color: #fd5151;
+  color: #fff;
+  -webkit-animation: ani2 0.4s steps(70) forwards;
+  animation: ani2 0.4s steps(70) forwards;
+}
+
+/* 마스크 애니메이션 */
+@-webkit-keyframes ani {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+@keyframes ani {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+@-webkit-keyframes ani2 {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+@keyframes ani2 {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
