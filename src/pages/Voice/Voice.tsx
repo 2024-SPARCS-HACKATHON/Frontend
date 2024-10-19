@@ -3,9 +3,39 @@ import micIcon from "/public/assets/mic.png";
 import resetIcon from "/public/assets/reset.png";
 import stopIcon from "/public/assets/stop.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useAudioRecorder } from "react-audio-voice-recorder";
 
 function Voice() {
   const navigate = useNavigate();
+  const [recordFile, setRecordFile] = useState<File>();
+
+  //음성녹음 관련
+  const recorderControls = useAudioRecorder();
+  const btnRef = useRef<HTMLButtonElement | null>(null);
+  const instRef = useRef<HTMLDivElement | null>(null);
+
+  //녹음 시작 메소드
+  const handleRecordingStart = () => {
+    setTimeout(() => {
+      recorderControls.startRecording();
+      btnRef.current?.style.setProperty("visibility", "visible");
+      instRef.current?.style.setProperty("visibility", "visible");
+    }, 1000);
+  };
+
+  //버튼을 눌렀을 때, 녹음 중지 or 질문초기화
+  const handleStopButtonClick = () => {
+    if (recorderControls.isRecording) {
+      recorderControls.stopRecording();
+      setRecordFile(recorderControls.recordingBlob);
+    }
+    console.log(recorderControls.recordingBlob);
+  };
+
+  useEffect(() => {
+    handleRecordingStart();
+  }, []);
 
   return (
     <div
@@ -42,7 +72,7 @@ function Voice() {
           src={stopIcon}
           alt="정지"
           className="w-[62px] cursor-pointer"
-          onClick={() => navigate("/analysis")}
+          onClick={handleStopButtonClick}
         />
       </div>
     </div>
