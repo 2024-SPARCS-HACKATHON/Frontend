@@ -10,15 +10,18 @@
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  animation: wave 1.7s linear;
+  animation: wave 60s linear;
 }
 
 @keyframes wave {
   0% {
     background-position: left 0px top 600px;
   }
-  100% {
+  3% {
     background-position: left 2600px top 150px;
+  }
+  100% {
+    background-position: left 28600px top 150px;
   }
 }
 
