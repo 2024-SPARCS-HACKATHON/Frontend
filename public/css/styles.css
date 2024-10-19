@@ -90,3 +90,49 @@
     mask-position: 0 0;
   }
 }
+
+/* 첫 번째 원 (고정) */
+.circle-1 {
+  position: absolute;
+  width: 331px;
+  height: 331px;
+  background-color: #ff6666;
+  border-radius: 50%;
+  opacity: 0.6;
+  z-index: 1; /* 첫 번째 원을 위에 보이게 함 */
+}
+
+/* 두 번째 원 */
+.circle-2 {
+  position: absolute;
+  width: 394px;
+  height: 394px;
+  background-color: #ff818b;
+  border-radius: 50%;
+  opacity: 0.6;
+  z-index: 0;
+  animation: pulse 1.5s ease-in-out infinite; /* 펄스 애니메이션 */
+}
+
+/* 세 번째 원 */
+.circle-3 {
+  position: absolute;
+  width: 448px;
+  height: 448px;
+  background-color: #ffabab;
+  border-radius: 50%;
+  opacity: 0.6;
+  z-index: 0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 펄스 애니메이션 */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.05;
+  }
+}
