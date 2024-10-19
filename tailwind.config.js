@@ -13,7 +13,7 @@ export default {
       keyframes: {
         waveDrop: {
           "0%": { top: "-150%" },
-          "100%": { top: "00%" },
+          "100%": { top: "0%" },
         },
       },
       animation: {

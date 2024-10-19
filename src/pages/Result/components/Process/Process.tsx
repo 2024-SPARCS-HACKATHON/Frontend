@@ -172,28 +172,33 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
                       목소리에 고민이 있다면
                     </div>
                   </div>
-                  <div className="flex flex-col items-center justify-center">
+                  <div className="flex flex-col items-center justify-center text-white">
                     <div className="font-noto text-[30px]">
-                      목소리가 너무 맑고 깨끗해서,
-                      <br />
-                      사람들이 가끔 차갑거나 거리감이 느껴진다는 말을 할 수
-                      있어요.
+                      목소리가 너무 맑고 깨끗해서, 사람들이 가끔 차갑거나
+                      거리감이 <br />
+                      느껴진다는 말을 할 수 있어요.
                     </div>
-                    <div className="my-5 font-noto text-[34px] font-bold">
+                    <div className="my-5 font-noto text-[34px] font-bold text-white">
                       이렇게 해 보세요!
                     </div>
                     <div className="flex w-full items-center justify-evenly">
                       <div className="flex flex-col items-center justify-center">
                         <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
-                        <div></div>
+                        <div className="mt-[22px] font-noto text-[28px] text-white">
+                          미소 지으며 말하기
+                        </div>
                       </div>
                       <div className="flex flex-col items-center justify-center">
                         <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
-                        <div></div>
+                        <div className="mt-[22px] font-noto text-[28px] text-white">
+                          밝은 목소리
+                        </div>
                       </div>
                       <div className="flex flex-col items-center justify-center">
                         <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
-                        <div></div>
+                        <div className="mt-[22px] font-noto text-[28px] text-white">
+                          빠른 속도로 말하기
+                        </div>
                       </div>
                     </div>
                   </div>
