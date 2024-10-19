@@ -1,7 +1,12 @@
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Main from "./pages/Main";
 
 function App() {
-  return <h1 className="flex text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <Routes>
+      <Route path="/" element={<Main />} />
+    </Routes>
+  );
 }
 
 export default App;
