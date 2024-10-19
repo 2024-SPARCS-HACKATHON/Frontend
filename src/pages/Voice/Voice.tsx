@@ -2,20 +2,24 @@ import "/public/css/styles.css";
 import micIcon from "/public/assets/mic.png";
 import resetIcon from "/public/assets/reset.png";
 import stopIcon from "/public/assets/stop.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useAudioRecorder } from "react-audio-voice-recorder";
+import api from "../../api/baseUrl/baseUrl";
 
 function Voice() {
   const navigate = useNavigate();
-  const [recordFile, setRecordFile] = useState<File>();
+  const location = useLocation();
+  const { gender, isSelected } = location.state;
+  const [recordFile, setRecordFile] = useState<File | null>(null);
 
-  //음성녹음 관련
+  // 음성녹음 관련
   const recorderControls = useAudioRecorder();
+
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const instRef = useRef<HTMLDivElement | null>(null);
 
-  //녹음 시작 메소드
+  // 녹음 시작 메소드
   const handleRecordingStart = () => {
     setTimeout(() => {
       recorderControls.startRecording();
@@ -24,13 +28,50 @@ function Voice() {
     }, 1000);
   };
 
-  //버튼을 눌렀을 때, 녹음 중지 or 질문초기화
+  // 녹음 중지
   const handleStopButtonClick = () => {
     if (recorderControls.isRecording) {
-      recorderControls.stopRecording();
-      setRecordFile(recorderControls.recordingBlob);
+      recorderControls.stopRecording(); // 녹음 중지
     }
-    console.log(recorderControls.recordingBlob);
+  };
+
+  // 녹음이 중지될 때 실행할 effect
+  useEffect(() => {
+    if (recorderControls.recordingBlob) {
+      const mimeType = recorderControls.recordingBlob.type;
+      const extension = mimeType.split("/")[1]; // 'webm' 또는 'ogg'
+      const fileName = `recording.${extension}`;
+      const file = new File([recorderControls.recordingBlob], fileName, {
+        type: mimeType,
+      });
+      console.log(file);
+      setRecordFile(file);
+      postVoice(file); // 녹음이 끝난 후 파일 전송
+    }
+  }, [recorderControls.recordingBlob]);
+  const postVoice = async (file: File) => {
+    try {
+      if (!file) {
+        console.error("녹음 파일이 없습니다.");
+        return;
+      }
+
+      const formData = new FormData();
+      console.log(file);
+      formData.append("file", file);
+      formData.append("gender", gender.isSelected);
+      formData.append("age", isSelected);
+
+      const response = await api.post("/audio/analyze_audio", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(response.data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
