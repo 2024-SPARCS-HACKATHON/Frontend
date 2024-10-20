@@ -59,7 +59,7 @@ function Voice() {
       const formData = new FormData();
       console.log(file);
       formData.append("file", file);
-      formData.append("gender", gender.isSelected);
+      formData.append("gender", gender);
       formData.append("age", isSelected);
 
       const response = await api.post("/audio/analyze_audio", formData, {
@@ -75,6 +75,7 @@ function Voice() {
   };
 
   useEffect(() => {
+    console.log(location.state);
     handleRecordingStart();
   }, []);
 
