@@ -3,12 +3,43 @@ import { useInView } from "react-intersection-observer";
 
 // Props 인터페이스 정의
 interface ProcessProps {
-  sectionColors: string;
+  data: {
+    final_analysis: {
+      voice_name: string;
+      description: string;
+    };
+    matching_names_and_descriptions: {
+      name: string;
+      description: string;
+    };
+    solutions: {
+      solution1: string;
+      solution2: string;
+      solution3: string;
+    };
+    chatgpt_explanation: string;
+    ui_theme: {
+      background_color_start: string;
+      title: string;
+    };
+  };
 }
 
-const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
+// 이미지 경로를 동적으로 생성하는 함수
+const getImagePath = (title: string, imageNumber: number): string => {
+  const normalizedTitle = title.toLowerCase().replace(/\s+/g, "-");
+  return `/public/assets/${normalizedTitle}-${imageNumber}.png`;
+};
+
+const Process: React.FC<ProcessProps> = ({ data }) => {
   const stepRefs = useRef<HTMLDivElement[]>([]); // 각 Step에 대한 ref
   const [isFirstContent, setIsFirstContent] = useState(true); // 첫 번째 내용인지 여부를 관리하는 상태
+
+  // 이미지 경로를 함수로 처리하여 여러 종류에 대응
+  const image1 = getImagePath(data.ui_theme.title, 1);
+  const image2 = getImagePath(data.ui_theme.title, 2);
+  const image3 = getImagePath(data.ui_theme.title, 3);
+  const image4 = getImagePath(data.ui_theme.title, 4);
 
   const handleChange = (inView: boolean, targetIndex: number) => {
     stepRefs.current.forEach((step, index) => {
@@ -70,7 +101,9 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
               >
                 <div
                   className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
-                  style={{ backgroundColor: sectionColors }} // 배경색 설정
+                  style={{
+                    backgroundColor: data.ui_theme.background_color_start,
+                  }} // 배경색 설정
                 >
                   <div className="flex items-center">
                     <div className="m-[30px] flex h-[70px] w-[70px] items-center justify-center rounded-[100px] bg-white font-phudu text-[35px]">
@@ -114,7 +147,7 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
                           }}
                         />
                       </div>
-                      <div className="w-[1400px]">이미지</div>
+                      <div className="w-[1400px]"></div>
                       <button className="h-[53px] w-[53px]" />
                     </div>
                   )}
@@ -132,7 +165,9 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
               >
                 <div
                   className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
-                  style={{ backgroundColor: sectionColors }}
+                  style={{
+                    backgroundColor: data.ui_theme.background_color_start,
+                  }}
                 >
                   <div className="flex items-center">
                     <div className="m-[30px] flex h-[70px] w-[70px] items-center justify-center rounded-[100px] bg-white font-phudu text-[35px]">
@@ -144,8 +179,17 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
                     </div>
                   </div>
                   <div className="flex justify-evenly">
-                    <div className="w-[800px]"></div>
-                    <img className="w-[600px]"></img>
+                    <div className="w-[800px]">
+                      <div>
+                        당신의 목소리는
+                        {data.matching_names_and_descriptions.name}님과
+                        비슷하네요!
+                      </div>
+                      <div>
+                        {data.matching_names_and_descriptions.description}
+                      </div>
+                    </div>
+                    <img className="w-[600px]" src={image1} alt="voice match" />
                   </div>
                 </div>
               </div>
@@ -161,7 +205,9 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
               >
                 <div
                   className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
-                  style={{ backgroundColor: sectionColors }}
+                  style={{
+                    backgroundColor: data.ui_theme.background_color_start,
+                  }}
                 >
                   <div className="flex items-center">
                     <div className="m-[30px] flex h-[70px] w-[70px] items-center justify-center rounded-[100px] bg-white font-phudu text-[35px]">
@@ -174,6 +220,7 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
                   </div>
                   <div className="flex flex-col items-center justify-center text-white">
                     <div className="font-noto text-[30px]">
+                      {/* TODO: 이거 값 추가 */}
                       목소리가 너무 맑고 깨끗해서, 사람들이 가끔 차갑거나
                       거리감이 <br />
                       느껴진다는 말을 할 수 있어요.
@@ -183,21 +230,27 @@ const Process: React.FC<ProcessProps> = ({ sectionColors }) => {
                     </div>
                     <div className="flex w-full items-center justify-evenly">
                       <div className="flex flex-col items-center justify-center">
-                        <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
+                        <div className="flex h-[280px] w-[280px] items-center justify-center rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]">
+                          <img src={image2} alt="solution 1" />
+                        </div>
                         <div className="mt-[22px] font-noto text-[28px] text-white">
-                          미소 지으며 말하기
+                          {data.solutions.solution1}
                         </div>
                       </div>
                       <div className="flex flex-col items-center justify-center">
-                        <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
+                        <div className="flex h-[280px] w-[280px] items-center justify-center rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]">
+                          <img src={image3} alt="solution 2" />
+                        </div>
                         <div className="mt-[22px] font-noto text-[28px] text-white">
-                          밝은 목소리
+                          {data.solutions.solution2}
                         </div>
                       </div>
                       <div className="flex flex-col items-center justify-center">
-                        <div className="h-[280px] w-[280px] rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]"></div>
+                        <div className="flex h-[280px] w-[280px] items-center justify-center rounded-[316px] bg-gradient-to-b from-[#ffffff] via-[#ffffff] to-[#fff3df]">
+                          <img src={image4} alt="solution 3" />
+                        </div>
                         <div className="mt-[22px] font-noto text-[28px] text-white">
-                          빠른 속도로 말하기
+                          {data.solutions.solution3}
                         </div>
                       </div>
                     </div>
