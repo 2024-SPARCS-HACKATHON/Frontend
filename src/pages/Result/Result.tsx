@@ -64,6 +64,12 @@ function Fullpage() {
     fetchData();
   }, []);
 
+  // voice_name이 "크리스탈 화이트"이면 배경색을 #3D3D3D로 설정
+  const backgroundColor =
+    processData?.final_analysis.voice_name === "크리스탈 화이트"
+      ? "#3D3D3D"
+      : "#FFFAF2";
+
   return (
     <>
       <FullpageContainer
@@ -77,8 +83,8 @@ function Fullpage() {
             style={{
               height: "100vh",
               width: "100vw",
+              backgroundColor, // 조건에 따라 배경색 설정
             }}
-            className="bg-[#FFFAF2]"
           >
             {/* 로딩 중일 때 */}
             {loading && <p>Loading...</p>}
@@ -103,8 +109,8 @@ function Fullpage() {
             style={{
               height: "250vh",
               width: "100vw",
+              backgroundColor, // 동일한 배경색 설정
             }}
-            className="bg-[#FFFAF2]"
           >
             {/* 로딩 중일 때 */}
             {loading && <p>Loading...</p>}
