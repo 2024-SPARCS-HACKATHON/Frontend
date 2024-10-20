@@ -9,6 +9,11 @@ import Process from "./components/Process";
 import WavePage from "./components/WavePage";
 import { useLocation } from "react-router-dom";
 
+interface MatchingNamesAndDescriptions {
+  name: string;
+  description: string;
+}
+
 // API 응답 데이터 타입 정의
 export interface ProcessData {
   f0_mean: number;
@@ -18,10 +23,7 @@ export interface ProcessData {
     voice_name: string;
     description: string;
   };
-  matching_names_and_descriptions: {
-    name: string;
-    description: string;
-  };
+  matching_names_and_descriptions: MatchingNamesAndDescriptions[];
   solutions: {
     solution1: string;
     solution2: string;
@@ -66,8 +68,8 @@ function Fullpage() {
             {/* 데이터가 성공적으로 로드되면 WavePage 컴포넌트로 전달 */}
             {processData && (
               <WavePage
-                startColor={`#&{processData.ui_theme.background_color_start}`}
-                endColor={`#&{processData.ui_theme.background_color_end}`}
+                startColor={`#${processData.ui_theme.background_color_start}`}
+                endColor={`#${processData.ui_theme.background_color_end}`}
                 title={processData.ui_theme.title}
                 description={processData.ui_theme.description}
               />

@@ -97,7 +97,7 @@ function Voice() {
       <div className="mt-10 flex items-center justify-center gap-6 text-[#FF9390]">
         <span className="font-noto text-[68px] font-black">“</span>
         <span className="font-noto text-[43px] font-extrabold">
-          문장문장문장문장문장문장문장문장
+          제 목소리 유형을 분석해주세요!
         </span>
         <span className="font-noto text-[68px] font-black">”</span>
       </div>

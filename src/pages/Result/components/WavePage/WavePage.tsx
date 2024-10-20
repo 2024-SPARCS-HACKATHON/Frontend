@@ -17,6 +17,7 @@ const WavePage: React.FC<WavePageProps> = ({
 }) => {
   const [showText, setShowText] = useState(false); // 두 텍스트에 동일한 상태 적용
   const [showDescription, setShowDescription] = useState(false);
+  const [showArrow, setShowArrow] = useState(false); // 화살표 상태 추가
 
   const [mainTitle, subtitle] = title.split(" "); // 제목을 두 부분으로 나눔
 
@@ -38,13 +39,22 @@ const WavePage: React.FC<WavePageProps> = ({
     return () => clearTimeout(timer); // 타이머 정리
   }, []);
 
+  // 2.5초 후에 화살표 표시
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowArrow(true);
+    }, 2500); // 2.5초 후에 화살표가 나타나게 설정
+
+    return () => clearTimeout(timer); // 타이머 정리
+  }, []);
+
   return (
     <>
       <div>
         <Wave
           fill="url(#gradient)"
           paused={false}
-          className="animate-waveDrop absolute h-[150vh] w-full"
+          className="absolute h-[150vh] w-full animate-waveDrop"
           style={{ transform: "scaleY(-1)" }} // Y축 반전 (필요한 경우 유지)
           options={{
             height: 100,
@@ -95,6 +105,28 @@ const WavePage: React.FC<WavePageProps> = ({
           </span>
         ))}
       </div>
+
+      {/* 아래 화살표 */}
+      {showArrow && ( // 2.5초 후에 나타남
+        <div className="fixed bottom-10 left-1/2 z-10 -translate-x-1/2 transform cursor-pointer">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="animate-bounce text-gray-500"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      )}
     </>
   );
 };

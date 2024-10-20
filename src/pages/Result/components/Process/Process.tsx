@@ -1,29 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { ProcessData } from "../../Result";
 
-// Props 인터페이스 정의
-interface ProcessProps {
-  data: {
-    final_analysis: {
-      voice_name: string;
-      description: string;
-    };
-    matching_names_and_descriptions: {
-      name: string;
-      description: string;
-    };
-    solutions: {
-      solution1: string;
-      solution2: string;
-      solution3: string;
-    };
-    chatgpt_explanation: string;
-    ui_theme: {
-      background_color_start: string;
-      title: string;
-    };
-  };
-}
+// Chart.js 설정
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 // 이미지 경로를 동적으로 생성하는 함수
 const getImagePath = (title: string, imageNumber: number): string => {
@@ -31,7 +30,7 @@ const getImagePath = (title: string, imageNumber: number): string => {
   return `/public/assets/${normalizedTitle}-${imageNumber}.png`;
 };
 
-const Process: React.FC<ProcessProps> = ({ data }) => {
+const Process: React.FC<ProcessData> = ({ data }) => {
   const stepRefs = useRef<HTMLDivElement[]>([]); // 각 Step에 대한 ref
   const [isFirstContent, setIsFirstContent] = useState(true); // 첫 번째 내용인지 여부를 관리하는 상태
 
@@ -84,6 +83,28 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
     setIsFirstContent((prev) => !prev); // 이전 상태를 토글하여 교대로 바뀌도록 설정
   };
 
+  // Chart.js 데이터를 설정하는 함수
+  const chartData = {
+    labels: Array.from({ length: 20 }, (_, i) => `MFCC ${i + 1}`),
+    datasets: [
+      {
+        label: "MFCC 1~20",
+        data: data.mfcc_1_to_20,
+        borderColor: "rgba(255, 147, 144, 1)",
+        backgroundColor: "rgba(255, 147, 144, 0.2)",
+        fill: true,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
   return (
     <div className="z-[100] min-h-screen w-full">
       <main role="main">
@@ -116,12 +137,14 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
                   </div>
                   {isFirstContent ? (
                     <div className="flex h-[50vh] w-full items-center justify-center">
-                      <button className="h-[53px] w-[53px]" />
-                      <div className="w-[1400px]">이미지</div>
+                      <div className="flex h-full w-[90%] items-center justify-center rounded-[100px] bg-[#FFFAF2]">
+                        <Line data={chartData} options={chartOptions} />
+                        {/* Line Chart 추가 */}
+                      </div>
                       <div>
                         <button
                           onClick={handleButtonClick}
-                          className="h-[53px] w-[53px]"
+                          className="ml-5 h-[53px] w-[53px]"
                           style={{
                             backgroundImage:
                               "url(/public/assets/arrow-right.png)",
@@ -147,7 +170,9 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
                           }}
                         />
                       </div>
-                      <div className="w-[1400px]"></div>
+                      <div className="w-[1400px] break-all px-5 text-3xl font-semibold leading-loose">
+                        {data.chatgpt_explanation}
+                      </div>
                       <button className="h-[53px] w-[53px]" />
                     </div>
                   )}
@@ -179,14 +204,14 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
                     </div>
                   </div>
                   <div className="flex justify-evenly">
-                    <div className="w-[800px]">
-                      <div>
-                        당신의 목소리는
-                        {data.matching_names_and_descriptions.name}님과
+                    <div className="flex w-[800px] flex-col items-center justify-center">
+                      <div className="text-4xl font-bold">
+                        당신의 목소리는 &nbsp;
+                        {data.matching_names_and_descriptions[0].name}님과
                         비슷하네요!
                       </div>
-                      <div>
-                        {data.matching_names_and_descriptions.description}
+                      <div className="mb-28 mt-20 text-2xl font-semibold leading-loose">
+                        {data.matching_names_and_descriptions[0].description}
                       </div>
                     </div>
                     <img className="w-[600px]" src={image1} alt="voice match" />
