@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import api from "../../api/baseUrl/baseUrl";
+import { ProcessData } from "../Result/Result";
 
 function Voice() {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ function Voice() {
       });
       console.log(file);
       setRecordFile(file);
+      navigate("/analysis");
       postVoice(file); // 녹음이 끝난 후 파일 전송
     }
   }, [recorderControls.recordingBlob]);
@@ -69,6 +71,8 @@ function Voice() {
       });
 
       console.log(response.data);
+
+      navigate("/result", { state: response.data });
     } catch (e) {
       console.error(e);
     }

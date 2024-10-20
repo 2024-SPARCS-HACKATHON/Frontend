@@ -7,9 +7,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Process from "./components/Process";
 import WavePage from "./components/WavePage";
+import { useLocation } from "react-router-dom";
 
 // API 응답 데이터 타입 정의
-interface ProcessData {
+export interface ProcessData {
   f0_mean: number;
   mean_rms: number;
   mfcc_1_to_20: number[];
@@ -36,32 +37,16 @@ interface ProcessData {
 }
 
 function Fullpage() {
+  const location = useLocation();
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [processData, setProcessData] = useState<ProcessData | null>(null); // API에서 가져온 데이터 저장
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
   const [error, setError] = useState<string | null>(null); // 에러 상태 관리
 
-  // API 호출하여 데이터 가져오기
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<ProcessData>(
-          "http://localhost:8000/audio/audio_analyze",
-        );
-
-        setProcessData(response.data);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response) {
-          setError(err.response.data.message || "Something went wrong");
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false); // 로딩 상태 종료
-      }
-    };
-
-    fetchData();
+    if (location.state) {
+      setProcessData(location.state as ProcessData);
+    }
   }, []);
 
   return (
