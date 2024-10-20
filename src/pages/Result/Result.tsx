@@ -40,8 +40,6 @@ function Fullpage() {
   const location = useLocation();
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [processData, setProcessData] = useState<ProcessData | null>(null); // API에서 가져온 데이터 저장
-  const [loading, setLoading] = useState(true); // 로딩 상태 관리
-  const [error, setError] = useState<string | null>(null); // 에러 상태 관리
 
   useEffect(() => {
     if (location.state) {
@@ -74,8 +72,8 @@ function Fullpage() {
             {/* 데이터가 성공적으로 로드되면 WavePage 컴포넌트로 전달 */}
             {processData && (
               <WavePage
-                startColor={processData.ui_theme.background_color_start}
-                endColor={processData.ui_theme.background_color_end}
+                startColor={`#&{processData.ui_theme.background_color_start}`}
+                endColor={`#&{processData.ui_theme.background_color_end}`}
                 title={processData.ui_theme.title}
                 description={processData.ui_theme.description}
               />
@@ -91,13 +89,6 @@ function Fullpage() {
             }}
             className="bg-[#FFFAF2]"
           >
-            {/* 로딩 중일 때 */}
-            {loading && <p>Loading...</p>}
-
-            {/* 에러 발생 시 */}
-            {error && <p>{error}</p>}
-
-            {/* 데이터가 성공적으로 로드되면 Process 컴포넌트로 전달 */}
             {processData && <Process data={processData} />}
           </div>
         </FullpageSection>

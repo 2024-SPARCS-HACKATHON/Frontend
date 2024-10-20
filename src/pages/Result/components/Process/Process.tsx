@@ -102,7 +102,7 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
                 <div
                   className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
                   style={{
-                    backgroundColor: data.ui_theme.background_color_start,
+                    backgroundColor: `#${data.ui_theme.background_color_start}`,
                   }} // 배경색 설정
                 >
                   <div className="flex items-center">
@@ -166,7 +166,7 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
                 <div
                   className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
                   style={{
-                    backgroundColor: data.ui_theme.background_color_start,
+                    backgroundColor: `#${data.ui_theme.background_color_start}`,
                   }}
                 >
                   <div className="flex items-center">
@@ -206,7 +206,7 @@ const Process: React.FC<ProcessProps> = ({ data }) => {
                 <div
                   className="relative mb-5 min-h-[70vh] w-[1600px] rounded-[100px] p-8 text-center shadow-lg"
                   style={{
-                    backgroundColor: data.ui_theme.background_color_start,
+                    backgroundColor: `#${data.ui_theme.background_color_start}`,
                   }}
                 >
                   <div className="flex items-center">
