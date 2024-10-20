@@ -63,12 +63,6 @@ function Fullpage() {
             }}
             className="bg-[#FFFAF2]"
           >
-            {/* 로딩 중일 때 */}
-            {loading && <p>Loading...</p>}
-
-            {/* 에러 발생 시 */}
-            {error && <p>{error}</p>}
-
             {/* 데이터가 성공적으로 로드되면 WavePage 컴포넌트로 전달 */}
             {processData && (
               <WavePage
